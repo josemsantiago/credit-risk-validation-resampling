@@ -1,0 +1,19 @@
+# Pinned to the exact stack that produced outputs/results.json under master seed
+# 20260815. Everything in this study is deterministic: the cohort filters, the
+# train/test split, the out-of-fold target encodings, the imputation and scaling
+# constants, every cross-validation fold, all ten resamplers, the bootstrap
+# draws, and every model, which is fitted on one thread so the averaging order in
+# predict_proba cannot vary. Two consecutive runs produce byte-identical figures
+# and tables.
+#
+# imbalanced-learn supplies the six named resampling methods rather than
+# reimplementations of them, so SMOTE here is the reference SMOTE. Version 0.9.1
+# is the last release that runs against scikit-learn 1.0.2, which is the version
+# the rest of this stack is pinned to; later releases require a newer scikit-learn
+# whose tree tie-breaking would move every number in the report.
+scikit-learn==1.0.2
+imbalanced-learn==0.9.1
+numpy==1.26.4
+pandas==1.4.0
+scipy==1.10.1
+matplotlib==3.5.1

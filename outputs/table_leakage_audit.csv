@@ -1,0 +1,7 @@
+column,rule,share_of_defaults,share_of_repaid
+recoveries,> 0,0.7279229448788861,0.0
+collection_recovery_fee,> 0,0.6748045012397482,0.0
+total_rec_prncp,< loan_amnt,1.0,0.05472335778272997
+out_prncp,> 0,0.0012397482357428952,0.0
+total_rec_late_fee,> 0,0.12340263208086973,0.02761256807213802
+last_pymnt_amnt,< installment,0.12550066755674233,0.12621201611594032

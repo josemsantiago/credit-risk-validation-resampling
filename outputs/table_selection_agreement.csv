@@ -1,0 +1,27 @@
+feature,variable,n_methods,methods
+"Credit inquiries, 6 months",inq_last_6mths,3,"LASSO, Mutual information, RFE"
+Interest rate,int_rate,3,"LASSO, Mutual information, RFE"
+Interest rate x Debt-to-income (reported),int_rate_x_dti,3,"LASSO, Mutual information, RFE"
+Interest rate x Loan-to-income,int_rate_x_loan_to_income,3,"LASSO, Mutual information, RFE"
+Log annual income,log_annual_inc,3,"LASSO, Mutual information, RFE"
+Purpose (target-encoded),purpose_te,3,"LASSO, Mutual information, RFE"
+Sub-grade (target-encoded),sub_grade_te,3,"LASSO, Mutual information, RFE"
+Grade: A,grade=A,2,"LASSO, Mutual information"
+Monthly installment,installment,2,"Mutual information, RFE"
+Payment-to-income,installment_to_income,2,"Mutual information, RFE"
+Revolving-to-income,revol_bal_to_income,2,"LASSO, RFE"
+State (target-encoded),addr_state_te,2,"LASSO, RFE"
+"Credit inquiries, 6 months x Open-account share",inq_last_6mths_x_open_acc_ratio,1,LASSO
+Credit utilization,revol_util,1,LASSO
+Debt-to-income (reported),dti,1,RFE
+Employment length missing,emp_length_missing,1,LASSO
+Grade: C,grade=C,1,Mutual information
+Grade: D,grade=D,1,Mutual information
+Grade: F,grade=F,1,Mutual information
+Home ownership: Mortgage,home_ownership=MORTGAGE,1,Mutual information
+Loan amount,loan_amnt,1,RFE
+Loan-to-income,loan_to_income,1,RFE
+Log revolving balance,log_revol_bal,1,RFE
+No public record,no_public_record,1,LASSO
+Term (months),term_months,1,LASSO
+Verification status: Verified,verification_status=Verified,1,Mutual information

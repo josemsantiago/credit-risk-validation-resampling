@@ -1,0 +1,5 @@
+stage,loans,default_rate,note
+All accepted loans,887379,,outcome unknown for most
+Resolved outcome,256939,0.1838101650586326,"fully paid, charged off, or defaulted"
+Resolved and unmatured,178694,0.20561406650475114,excluded: only the fastest resolutions are visible
+Analysis cohort,78245,0.13401495303214264,full contractual term elapsed by the snapshot

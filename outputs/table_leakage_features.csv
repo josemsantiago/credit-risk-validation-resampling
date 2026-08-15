@@ -1,0 +1,4 @@
+feature_set,roc_auc,pr_auc,note
+Origination-time features only,0.673369705676242,0.24127011461630582,what a lender could actually have known
+Plus post-origination columns,0.9995918963330684,0.9989286061412259,16 columns recorded after the money was lent
+`recoveries` > 0 alone,0.8650667514303878,0.7663011777351046,"one post-origination column, used as the entire model"

@@ -1,0 +1,11 @@
+loan_status,loans,share,treatment
+Current,601779,0.6781533031545709,unresolved (excluded)
+Fully Paid,207723,0.23408599933061297,repaid (negative class)
+Charged Off,45248,0.050990613931589546,default (positive class)
+Late (31-120 days),11591,0.013062062545992187,unresolved (excluded)
+Issued,8460,0.00953369417126166,unresolved (excluded)
+In Grace Period,6253,0.007046594521619286,unresolved (excluded)
+Late (16-30 days),2357,0.0026561367803385025,unresolved (excluded)
+Does not meet the credit policy. Status:Fully Paid,1988,0.002240305438826026,repaid (negative class)
+Default,1219,0.001373708415457206,default (positive class)
+Does not meet the credit policy. Status:Charged Off,761,0.000857581709731693,default (positive class)

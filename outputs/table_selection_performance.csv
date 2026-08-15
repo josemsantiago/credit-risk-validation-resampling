@@ -1,0 +1,5 @@
+method,k,roc_auc,pr_auc,brier,top_features
+Mutual information,15,0.6654710960214341,0.2336844344751679,0.11117159267652792,"Interest rate, Sub-grade (target-encoded), Grade: A, Interest rate x Debt-to-income (reported), Payment-to-income"
+LASSO,15,0.6715485553765044,0.23985515022839593,0.1107621962727833,"Sub-grade (target-encoded), Log annual income, Purpose (target-encoded), Credit inquiries, 6 months, State (target-encoded)"
+RFE,15,0.6687917798454988,0.234331983481588,0.11107630692577976,"Loan amount, Log revolving balance, Revolving-to-income, Payment-to-income, Loan-to-income"
+All features,48,0.673369705676242,0.24127011461630582,0.11064356812793821,n/a

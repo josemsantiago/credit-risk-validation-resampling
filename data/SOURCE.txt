@@ -1,0 +1,102 @@
+Dataset: Credit Risk Analysis (LendingClub accepted loans, 2007-2015), Kaggle
+Original source: https://www.kaggle.com/datasets/ranadeep/credit-risk-dataset
+Uploader: Ranadeep ("Dark_Raider"), version 3, 12 June 2021
+Reference: Ranadeep. (2021). Credit risk analysis [Data set]. Kaggle.
+Underlying data: LendingClub Corporation's published statistics for accepted
+           loans issued June 2007 through December 2015, snapshot taken
+           January 2016.
+Retrieved on: 2026-08-15, through the Kaggle API with an account token.
+
+Files:
+  credit-risk-dataset.zip     106,142,650 bytes  MD5 9ad11d1d74471063fdbab8626e060d75
+  loan.csv                    441,771,600 bytes  MD5 807c374fa7841310a45e411eb8c399fd
+  LCDataDictionary.xlsx            20,995 bytes  MD5 54b16d503b84459541bc7035f0b2c4a7
+
+loan.csv holds 887,379 loans and 74 columns. LCDataDictionary.xlsx defines every
+column on its "LoanStats" tab and is tracked alongside the data. Neither file is
+committed: loan.csv is 441 MB, well past what a repository should carry, so
+`.gitignore` excludes the directory's contents and this record is what the
+repository keeps. The three checksums above reproduce the exact files.
+
+Integrity check (asserted in src/data.py on every run): loan.csv's MD5 matches
+the value above before it is read; its shape is exactly 887,379 x 74; and every
+value of loan_status falls in the set of statuses config.py enumerates, so a
+status added by a later LendingClub release fails the run rather than being
+silently dropped into the majority class.
+
+Target: loan_status. Only a terminal status carries a known outcome.
+  default (positive class, 47,228 loans in the resolved set)
+      Charged Off, Default,
+      Does not meet the credit policy. Status:Charged Off
+  repaid (negative class, 209,711 loans in the resolved set)
+      Fully Paid, Does not meet the credit policy. Status:Fully Paid
+  unresolved (excluded, 630,440 loans)
+      Current, Issued, In Grace Period, Late (16-30 days), Late (31-120 days)
+Treating "Current" as a non-default is the standard way this file is misused. It
+labels a loan that has not yet had the chance to default, and it is the single
+largest status in the file.
+
+Cohort construction, and what each filter costs:
+  887,379  all accepted loans
+  256,939  resolved outcome                          18.38% default
+  178,694  resolved but full term not yet elapsed    20.56% default   EXCLUDED
+   78,245  analysis cohort                           13.40% default
+The maturity filter keeps a loan only if its full contractual term had run by the
+January 2016 snapshot: a 36-month loan issued in December 2012 qualifies, one
+issued in January 2013 does not. Without it the cohort is enriched with loans
+that resolved unusually fast, which is why the excluded rows default at 20.56%
+against the kept rows' 13.40%. That 7.2-point gap is a property of the snapshot
+rather than of any borrower.
+
+Analysis cohort: 78,245 loans issued June 2007 through December 2012 (67 distinct
+issue months), 10,486 defaults, 13.40% default rate, an imbalance ratio of about
+1 default to 6.5 repayments. Default rate by year of issue: 26.2% (2007), 20.7%
+(2008), 13.7% (2009), 14.0% (2010), 10.6% (2011), 13.5% (2012). It is not
+stationary, which is what makes a forward-chaining validation split disagree with
+a random one.
+
+Excluded from the feature set (src/config.py):
+  POST_ORIGINATION (16 columns) recorded after the loan was funded. Each is a
+    function of what the borrower went on to do. recoveries is the clearest case:
+    it is non-zero for 72.8% of defaults in this cohort and for no repaid loan at
+    all, and total_rec_prncp is below the amount lent for 100% of defaults.
+  NOT_YET_COLLECTED (21 columns) that LendingClub began recording partway through
+    the cohort. tot_cur_bal, tot_coll_amt, and total_rev_hi_lim are 100% missing
+    before 2012 and 52.0% missing in 2012, so their blankness is a vintage
+    marker, and vintage is nearly a default-rate label.
+  NON_PREDICTIVE identifiers, free text, and constants: id, member_id, url, desc,
+    emp_title, title, zip_code, policy_code, application_type, pymnt_plan,
+    acc_now_delinq, initial_list_status.
+The post-origination columns are still read, once, for one purpose: pricing what
+an error costs (src/data.py, price_errors). Using realized cash flows to value a
+mistake is legitimate; using them to predict it is not.
+
+Informative missingness, kept and flagged rather than filled away:
+  mths_since_last_delinq   60.8% blank, meaning no delinquency was ever recorded.
+                           Those borrowers default at 12.8% against 14.4% for
+                           borrowers with a recorded delinquency.
+  mths_since_last_record   94.4% blank, meaning no public record. Borrowers with
+                           one default at 21.2% against 12.9% without.
+Both are filled at a ceiling beyond the observed range and carry an indicator.
+Every other gap is under 3.4% and is filled from the training partition's median.
+
+Cost model, estimated from this cohort's realized cash flows:
+  loss given default   0.5621 of principal (mean), 0.5845 (median)
+  interest earned      0.1671 of principal on a repaid loan (mean)
+  mean loss per default        $6,072   on a mean principal of $10,778
+  mean interest per repaid     $1,877   on a mean principal of $10,858
+A missed default therefore costs 3.24 times what a false alarm costs, which puts
+the cost-optimal decision threshold near 0.24 rather than at 0.5.
+
+Partitioning: one 70/30 hold-out, 54,771 training and 23,474 test loans,
+stratified on the outcome under master seed 20260815, with both partitions left
+in issue-date order so the forward-chaining protocol is a split in time rather
+than in row position. Imputation constants, one-hot levels, target encodings, the
+scaler, every resampling step, and every decision threshold are estimated inside
+the training partition only.
+
+License/terms: the Kaggle dataset page states GPL 2. The underlying loan
+statistics were published by LendingClub Corporation for public download and
+carry no borrower identifiers; the file contains no names, addresses, or account
+numbers, and geography is limited to a three-digit ZIP prefix and state. Used
+here for non-commercial academic research.

@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------------------
+# OS / editor cruft
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# Virtual environments
+# ---------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ---------------------------------------------------------------------------
+# Data: the LendingClub file is a 441 MB public download, refetched through
+# data/SOURCE.txt rather than tracked. Only the provenance record belongs in the
+# repository.
+# ---------------------------------------------------------------------------
+data/*.csv
+data/*.zip
+data/*.xlsx
+
+# ---------------------------------------------------------------------------
+# Report and any report-like component — kept private, never shared.
+# The full written report, its Markdown source, process logs, build scripts,
+# and downloaded reference PDFs are all excluded. Only the code and the
+# reproducible run artifacts (figures, outputs) are tracked.
+# ---------------------------------------------------------------------------
+report/
+downloads/
+*.docx
+*.pdf

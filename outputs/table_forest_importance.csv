@@ -1,0 +1,49 @@
+feature,variable,importance
+Interest rate,int_rate,0.06320705092629424
+Sub-grade (target-encoded),sub_grade_te,0.055167611683250434
+Interest rate x Loan-to-income,int_rate_x_loan_to_income,0.05383335271755105
+"Credit inquiries, 6 months x Open-account share",inq_last_6mths_x_open_acc_ratio,0.044081370469974054
+Interest rate x Debt-to-income (reported),int_rate_x_dti,0.04396362117501301
+Log annual income,log_annual_inc,0.03993276842256775
+Annual income,annual_inc,0.038127320782983996
+Revolving-to-income,revol_bal_to_income,0.037387101856160385
+Credit utilization,revol_util,0.037039700673849416
+Payment-to-income,installment_to_income,0.035836383021010984
+Credit utilization x Credit age (years),revol_util_x_credit_age_years,0.035422396958081276
+Revolving balance,revol_bal,0.034924727240904244
+Loan-to-income,loan_to_income,0.03461641275323393
+Credit age (years),credit_age_years,0.034453644056542276
+Total debt burden,total_debt_burden,0.034355735929784345
+Log revolving balance,log_revol_bal,0.03408596524548596
+Monthly installment,installment,0.03325881942356793
+State (target-encoded),addr_state_te,0.03252418111827666
+Debt-to-income (reported),dti,0.032105318593600496
+Open-account share,open_acc_ratio,0.030019004844532092
+Loan amount,loan_amnt,0.024352401007660136
+Total accounts,total_acc,0.023667929334516332
+Purpose (target-encoded),purpose_te,0.021817470533920504
+"Credit inquiries, 6 months",inq_last_6mths,0.019140394810048096
+Months since delinquency,months_since_delinq,0.017846681849236
+Employment length (years),emp_length_years,0.017269573601608024
+Open accounts,open_acc,0.017238238506441243
+Grade: A,grade=A,0.017014920476211098
+Grade: D,grade=D,0.006429961697888859
+Months since public record,months_since_record,0.006330198101876439
+Grade: B,grade=B,0.005453757082519819
+Verification status: Not Verified,verification_status=Not Verified,0.004180551148477368
+Home ownership: Rent,home_ownership=RENT,0.004140687331479337
+Never delinquent,never_delinquent,0.003997468935141443
+Grade: C,grade=C,0.003808061917497467
+Home ownership: Mortgage,home_ownership=MORTGAGE,0.0037364343681830356
+Term (months),term_months,0.0032855632805632333
+Verification status: Verified,verification_status=Verified,0.0030408509482143247
+No public record,no_public_record,0.0028587288565035847
+Verification status: Source Verified,verification_status=Source Verified,0.002299031750971301
+Grade: E,grade=E,0.0019379326950860188
+"Delinquencies, 2 years",delinq_2yrs,0.0015585996782074632
+Employment length missing,emp_length_missing,0.0013482879692095597
+Grade: F,grade=F,0.0010530723546905074
+Public records,pub_rec,0.0008974736664658323
+Home ownership: Own,home_ownership=OWN,0.000743351020596065
+Grade: G,grade=G,0.0001942802596997825
+Home ownership: Other,home_ownership=OTHER,1.5608924422607212e-05
