@@ -63,7 +63,7 @@ def fig_cohort(raw, cohort, funnel, vintages, path):
     ax.set_xticklabels(["All accepted", "Resolved", "Analysis\ncohort"], fontsize=8.5)
     ax.set_ylabel("Loans (thousands)")
     ax.set_ylim(0, max(d["loans"]) / 1000 * 1.30)
-    _panel(ax, "A", "Two filters, and what each costs")
+    _panel(ax, "A", "Cohort size at each filter stage")
 
     ax = axes[1]                                        # the maturity bias
     unmatured = float(funnel.loc[funnel["stage"] == "Resolved and unmatured",
@@ -80,7 +80,7 @@ def fig_cohort(raw, cohort, funnel, vintages, path):
                        fontsize=8.5)
     ax.set_ylabel("Observed default rate (%)")
     ax.set_ylim(0, max(matured, unmatured) * 100 * 1.25)
-    _panel(ax, "B", "A resolved loan is not a finished loan")
+    _panel(ax, "B", "Default rate by maturity-filter outcome")
 
     ax = axes[2]                                        # vintages
     ax2 = ax.twinx()
@@ -102,7 +102,7 @@ def fig_cohort(raw, cohort, funnel, vintages, path):
     ax.set_ylabel("Default rate (%)", color=DEFAULT)
     ax.tick_params(axis="y", labelcolor=DEFAULT)
     ax.legend(frameon=False, fontsize=8, loc="lower left")
-    _panel(ax, "C", "The default rate is not stationary")
+    _panel(ax, "C", "Loans issued and default rate by year")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -126,7 +126,7 @@ def fig_leakage(audit, leakage, path):
     ax.set_xlabel("Share of the class satisfying the rule (%)")
     ax.set_xlim(0, 108)
     ax.legend(frameon=False, fontsize=8, loc="lower right")
-    _panel(ax, "A", "What a post-origination column knows")
+    _panel(ax, "A", "Class separation by post-origination column")
 
     ax = axes[1]                                        # AUC with and without
     d = pd.DataFrame(leakage["features"])
@@ -144,7 +144,7 @@ def fig_leakage(audit, leakage, path):
                         "`recoveries` > 0\nalone"], fontsize=8)
     ax.set_ylabel("Hold-out ROC-AUC")
     ax.set_ylim(0.45, 1.06)
-    _panel(ax, "B", "The same rows, three feature sets")
+    _panel(ax, "B", "Hold-out ROC-AUC by feature set")
 
     ax = axes[2]                                        # resampling order
     d = pd.DataFrame(leakage["resampling_order"])
@@ -163,7 +163,7 @@ def fig_leakage(audit, leakage, path):
     ax.set_ylabel("ROC-AUC reported")
     ax.set_ylim(0.5, max(d["resampled_before_split"]) * 1.10)
     ax.legend(frameon=False, fontsize=8, loc="upper left")
-    _panel(ax, "C", "The same method, two orders")
+    _panel(ax, "C", "Reported ROC-AUC by resampling order")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -191,7 +191,7 @@ def fig_features(design, cohort, selection, imputation, sel_results, path):
     ax.plot([], [], color=REPAID, lw=6, label="accidental gap")
     ax.plot([], [], color=DEFAULT, lw=6, label="blank means something")
     ax.legend(frameon=False, fontsize=8, loc="lower right")
-    _panel(ax, "A", "Two kinds of missing value")
+    _panel(ax, "A", "Missingness by column type")
 
     ax = axes[1]                                        # what the choices are worth
     d = pd.DataFrame(imputation["rows"])
@@ -210,7 +210,7 @@ def fig_features(design, cohort, selection, imputation, sel_results, path):
     ax.plot([], [], color=REPAID, lw=6, label="sparse accidental gaps")
     ax.plot([], [], color=DEFAULT, lw=6, label="informative blanks")
     ax.legend(frameon=False, fontsize=8, loc="lower right")
-    _panel(ax, "B", "Only one of the two choices matters")
+    _panel(ax, "B", "ROC-AUC forgone by preprocessing choice")
 
     ax = axes[2]                                        # selector agreement
     d = pd.DataFrame(sel_results["agreement"])
@@ -229,7 +229,7 @@ def fig_features(design, cohort, selection, imputation, sel_results, path):
     for i, (_, r) in enumerate(perf.iterrows()):
         ax.text(0.02, 0.955 - i * 0.055, f"{r['method']}: {r['roc_auc']:.4f}",
                 transform=ax.transAxes, fontsize=7, color="#555")
-    _panel(ax, "C", f"Three selectors, {sel_results['k']} features each")
+    _panel(ax, "C", f"Selector agreement on the top {sel_results['k']} features")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -256,7 +256,7 @@ def fig_crossval(records, sweep, cv_results, path):
                    s=9, color=INK, alpha=0.5, zorder=3)
     ax.set_xticklabels(labels, rotation=22, ha="right", fontsize=7.5)
     ax.set_ylabel("Fold ROC-AUC")
-    _panel(ax, "A", "Where each protocol's folds land")
+    _panel(ax, "A", "Fold ROC-AUC by validation protocol")
 
     ax = axes[1]                                        # what stratification controls
     for scheme, col, mk in [("K-fold", DEFAULT, "o"),
@@ -268,12 +268,12 @@ def fig_crossval(records, sweep, cv_results, path):
     ax.set_xlabel("Loans available to the ten folds")
     ax.set_ylabel("SD of the fold default rate (percentage points)")
     ax.legend(frameon=False, fontsize=8.5)
-    _panel(ax, "B", "Stratification matters only at small n")
+    _panel(ax, "B", "Fold default-rate variance by sample size")
 
     ax = axes[2]                                        # temporal drift
     d = pd.DataFrame(cv_results["temporal_drift"])
     if not len(d):
-        _panel(ax, "C", "Forward chaining, vintage by vintage")
+        _panel(ax, "C", "Forward-chaining ROC-AUC by issue year")
         fig.tight_layout(); fig.savefig(path, bbox_inches="tight"); plt.close(fig)
         return
     ax2 = ax.twinx()
@@ -290,7 +290,7 @@ def fig_crossval(records, sweep, cv_results, path):
     ax2.set_ylim(0, float(d["default_rate"].max()) * 100 * 2.2)
     ax.set_xlabel("Year of issue")
     ax.set_ylabel("ROC-AUC on that vintage")
-    _panel(ax, "C", "Forward chaining, vintage by vintage")
+    _panel(ax, "C", "Forward-chaining ROC-AUC by issue year")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -316,7 +316,7 @@ def fig_resampling(shapes, grid, neigh, path):
     ax.set_xlabel("Training rows after resampling (thousands)")
     ax.set_xlim(0, float(d["rows_after"].max()) / 1000 * 1.34)
     ax.legend(frameon=False, fontsize=7, loc="lower right", labelspacing=0.3)
-    _panel(ax, "A", "What each method does to the fold")
+    _panel(ax, "A", "Training-fold composition by method")
 
     ax = axes[1]                                        # ranking vs threshold metric
     d = grid.query("model == 'Logistic regression'").copy()
@@ -334,7 +334,7 @@ def fig_resampling(shapes, grid, neigh, path):
     ax.set_xlabel("Score (dotted lines: the untouched fold)")
     ax.set_xlim(0, 1)
     ax.legend(frameon=False, fontsize=8, loc="upper center", ncol=2)
-    _panel(ax, "B", "ROC-AUC holds, F1 at 0.5 does not")
+    _panel(ax, "B", "ROC-AUC and F1 at 0.5 by method")
 
     ax = axes[2]                                        # what a synthetic row is
     if len(neigh):
@@ -354,7 +354,7 @@ def fig_resampling(shapes, grid, neigh, path):
                       "typical distance between real defaults")
         ax.set_xlim(0, max(1.35, float(d["ratio"].max()) * 1.45))
         ax.legend(frameon=False, fontsize=7.5, loc="lower right")
-    _panel(ax, "C", "How far a synthetic borrower sits from a real one")
+    _panel(ax, "C", "Distance from synthetic to nearest real default")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -379,7 +379,7 @@ def fig_resampling_effect(holdout, resampling, y_te, path):
     ax.set_ylabel("Cumulative share of held-out loans")
     ax.set_xlim(0, 1)
     ax.legend(frameon=False, fontsize=7.5, loc="lower right")
-    _panel(ax, "A", "Resampling moves the scale, not the order")
+    _panel(ax, "A", "Predicted-risk distribution by method")
 
     ax = axes[1]                                        # calibration
     for h, col in zip(picked, SERIES):
@@ -392,7 +392,7 @@ def fig_resampling_effect(holdout, resampling, y_te, path):
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.legend(frameon=False, fontsize=7.5, loc="upper left")
-    _panel(ax, "B", "What each method does to the probabilities")
+    _panel(ax, "B", "Reliability curves and calibration error")
 
     ax = axes[2]                                        # the control
     d = pd.DataFrame(resampling["threshold_control"])
@@ -407,7 +407,7 @@ def fig_resampling_effect(holdout, resampling, y_te, path):
     ax.set_xlabel("F1 on the out-of-fold predictions")
     ax.set_xlim(0, max(float(d["f1_at_best"].max()), float(d["f1_at_half"].max())) * 1.45)
     ax.legend(frameon=False, fontsize=7.5, loc="lower right", labelspacing=0.3)
-    _panel(ax, "C", "The threshold recovers what resampling bought")
+    _panel(ax, "C", "F1 at 0.5 against F1 at each model's cut-off")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -434,7 +434,7 @@ def fig_bootstrap(boot, path):
     ax.set_xlabel("95% confidence interval")
     ax.set_xlim(0, 1)
     ax.legend(frameon=False, fontsize=8, loc="lower right")
-    _panel(ax, "A", "Two intervals, one bootstrap distribution")
+    _panel(ax, "A", "Percentile and BCa intervals by metric")
 
     ax = axes[1]                                        # error estimators
     oob = boot["out_of_bag"]
@@ -454,7 +454,7 @@ def fig_bootstrap(boot, path):
     ax.set_ylabel("Misclassification rate")
     ax.legend(frameon=False, fontsize=7.5, ncol=2, loc="upper center")
     ax.set_ylim(0, max(oob[m]["oob_error"] for m in models) * 1.55)
-    _panel(ax, "B", "Four estimates of the same error")
+    _panel(ax, "B", "Four estimates of misclassification rate")
 
     ax = axes[2]                                        # stability
     d = pd.DataFrame(boot["stability"]).head(14).iloc[::-1]
@@ -478,7 +478,7 @@ def fig_bootstrap(boot, path):
     ax.plot([], [], color=DEFAULT, lw=6, label="flips often")
     ax.legend(frameon=False, fontsize=6.5, loc="lower center", ncol=3,
               columnspacing=0.8, handletextpad=0.3, handlelength=1.2)
-    _panel(ax, "C", "Which coefficients the data determined")
+    _panel(ax, "C", "Coefficient stability across 200 refits")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -490,8 +490,8 @@ def fig_errors(err, y_te, p_te, path):
     fig, axes = plt.subplots(1, 3, figsize=(12.6, 4.2))
     labels = ["Repaid", "Default"]
 
-    for k, (key, title) in enumerate([("confusion_at_half", "At the 0.5 cut-off"),
-                                      ("confusion_at_cost", "At the cost-optimal cut-off")]):
+    for k, (key, title) in enumerate([("confusion_at_half", "Confusion matrix at the 0.5 cut-off"),
+                                      ("confusion_at_cost", "Confusion matrix at the cost-optimal cut-off")]):
         ax = axes[k]
         cm = np.array(err[key])
         total = cm.sum()
@@ -521,7 +521,7 @@ def fig_errors(err, y_te, p_te, path):
     ax.set_xlabel("Risk decile (1 = safest)")
     ax.set_ylabel("Default rate (%)")
     ax.legend(frameon=False, fontsize=8.5, loc="upper left")
-    _panel(ax, "C", "Observed risk climbs with predicted risk")
+    _panel(ax, "C", "Observed and predicted default rate by decile")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -551,7 +551,7 @@ def fig_operating_point(err, costs, path):
     ax.set_xlabel("Decision threshold")
     ax.set_ylabel("Expected cost per loan ($)")
     ax.set_xlim(0, min(1.0, float(d["threshold"].max())))
-    _panel(ax, "A", "What the threshold costs")
+    _panel(ax, "A", "Expected cost per loan by threshold")
 
     ax = axes[1]                                        # precision and recall
     t = pd.DataFrame(err["thresholds"])
@@ -578,7 +578,7 @@ def fig_operating_point(err, costs, path):
     ax.set_ylim(0, 1.30)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.legend(frameon=False, fontsize=8, loc="center right")
-    _panel(ax, "B", "Six rules, six operating points")
+    _panel(ax, "B", "Precision, recall, and F1 by threshold")
 
     ax = axes[2]                                        # portfolio view
     d = pd.DataFrame(err["approval_curve"])
@@ -595,7 +595,7 @@ def fig_operating_point(err, costs, path):
     ax.set_xlabel("Share of applicants approved (%)")
     ax.set_ylabel("Interest earned less losses ($M)")
     ax.legend(frameon=False, fontsize=8, loc="lower center")
-    _panel(ax, "C", "Interest earned less losses, by approval rate")
+    _panel(ax, "C", "Net return by share of applicants approved")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")

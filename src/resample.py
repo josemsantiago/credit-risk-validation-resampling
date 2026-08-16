@@ -40,11 +40,9 @@ DESCRIPTIONS = {
 RESHAPES_DATA = {name: name not in ("None", "Class weight") for name in C.RESAMPLERS}
 
 
-# The neighbour searches inside these methods are given every core. Each query
-# is independent and its result is merged by row index, so parallelism here
-# cannot change the answer, unlike a threaded floating-point reduction. The
-# linear-algebra backend is pinned to one thread in run_analysis.py for that
-# reason; this is where the cores go instead.
+# Neighbour queries are independent and merged by row index, so parallelism
+# here cannot change the answer, unlike a threaded float reduction. BLAS is
+# pinned to one thread in run_analysis.py; the cores go here instead.
 N_JOBS = -1
 
 

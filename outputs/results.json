@@ -182,7 +182,7 @@
         "roc_auc": 0.6779,
         "pr_auc": 0.2531,
         "brier": 0.1147,
-        "seconds": 3.3
+        "seconds": 3.0
       },
       {
         "question": "Sparse accidental gaps",
@@ -630,7 +630,7 @@
         "pooled_pr_auc": 0.2409,
         "pooled_brier": 0.1105,
         "min_minority_in_fold": 1362,
-        "seconds": 2.0
+        "seconds": 1.5
       },
       {
         "protocol": "K-fold (10)",
@@ -644,7 +644,7 @@
         "pooled_pr_auc": 0.2422,
         "pooled_brier": 0.1105,
         "min_minority_in_fold": 669,
-        "seconds": 4.1
+        "seconds": 3.8
       },
       {
         "protocol": "Stratified k-fold (5)",
@@ -658,7 +658,7 @@
         "pooled_pr_auc": 0.2422,
         "pooled_brier": 0.1105,
         "min_minority_in_fold": 1468,
-        "seconds": 1.6
+        "seconds": 1.4
       },
       {
         "protocol": "Stratified k-fold (10)",
@@ -672,7 +672,7 @@
         "pooled_pr_auc": 0.2423,
         "pooled_brier": 0.1105,
         "min_minority_in_fold": 734,
-        "seconds": 3.8
+        "seconds": 3.2
       },
       {
         "protocol": "Repeated stratified (5 x 5)",
@@ -686,7 +686,7 @@
         "pooled_pr_auc": 0.2409,
         "pooled_brier": 0.1106,
         "min_minority_in_fold": 1468,
-        "seconds": 8.4
+        "seconds": 8.0
       },
       {
         "protocol": "Time-series split (5)",
@@ -700,7 +700,7 @@
         "pooled_pr_auc": 0.2185,
         "pooled_brier": 0.1093,
         "min_minority_in_fold": 1087,
-        "seconds": 1.1
+        "seconds": 1.0
       }
     ],
     "small": [
@@ -744,7 +744,7 @@
         "pooled_pr_auc": 0.1704,
         "pooled_brier": 0.121,
         "min_minority_in_fold": 53,
-        "seconds": 0.2
+        "seconds": 0.1
       },
       {
         "protocol": "Stratified k-fold (10)",
@@ -786,7 +786,7 @@
         "pooled_pr_auc": 0.1692,
         "pooled_brier": 0.1207,
         "min_minority_in_fold": 1,
-        "seconds": 59.3
+        "seconds": 52.4
       }
     ],
     "small_n": 2000,
@@ -1380,7 +1380,7 @@
         "rows_added": 32072,
         "rows_removed": 0,
         "synthetic_share": 0.4226,
-        "seconds": 0.0074
+        "seconds": 0.0088
       },
       {
         "method": "Random under",
@@ -1396,7 +1396,7 @@
         "rows_added": 0,
         "rows_removed": 32072,
         "synthetic_share": 0.0,
-        "seconds": 0.0039
+        "seconds": 0.0037
       },
       {
         "method": "SMOTE",
@@ -1412,7 +1412,7 @@
         "rows_added": 32072,
         "rows_removed": 0,
         "synthetic_share": 0.4226,
-        "seconds": 0.3701
+        "seconds": 0.3666
       },
       {
         "method": "ADASYN",
@@ -1428,7 +1428,7 @@
         "rows_added": 32930,
         "rows_removed": 0,
         "synthetic_share": 0.4291,
-        "seconds": 3.0652
+        "seconds": 2.8084
       },
       {
         "method": "Tomek links",
@@ -1444,7 +1444,7 @@
         "rows_added": 0,
         "rows_removed": 1823,
         "synthetic_share": 0.0,
-        "seconds": 20.2408
+        "seconds": 23.2378
       },
       {
         "method": "ENN",
@@ -1460,7 +1460,7 @@
         "rows_added": 0,
         "rows_removed": 11676,
         "synthetic_share": 0.0,
-        "seconds": 16.0021
+        "seconds": 19.7537
       },
       {
         "method": "SMOTE-Tomek",
@@ -1476,7 +1476,7 @@
         "rows_added": 31994,
         "rows_removed": 0,
         "synthetic_share": 0.4225,
-        "seconds": 60.9138
+        "seconds": 72.1347
       },
       {
         "method": "SMOTE-ENN",
@@ -1492,7 +1492,7 @@
         "rows_added": 12656,
         "rows_removed": 0,
         "synthetic_share": 0.5554,
-        "seconds": 55.1188
+        "seconds": 53.1409
       }
     ],
     "threshold_control": [
@@ -7195,5 +7195,5 @@
       }
     ]
   },
-  "runtime_sec": 2464.97
+  "runtime_sec": 2850.94
 }

@@ -58,10 +58,9 @@ DAYS_PER_MONTH = 30.44               # term is contractual months; issue_d is mo
 TARGET = "default"                   # 1 = charged off or defaulted, 0 = fully repaid
 
 # ----------------------------------------------------------------- leakage
-# Columns recorded after the loan is funded. Every one of them is a function of
-# what the borrower went on to do, so any model that sees them is reading the
-# outcome rather than predicting it. `recoveries` is the extreme case: it is
-# non-zero for 52.3% of defaults and for no repaid loan at all.
+# Recorded after funding, so each is a function of what the borrower went on to
+# do; a model that sees them reads the outcome. `recoveries` is the extreme
+# case, non-zero for 52.3% of defaults and for no repaid loan.
 POST_ORIGINATION = [
     "out_prncp", "out_prncp_inv", "total_pymnt", "total_pymnt_inv",
     "total_rec_prncp", "total_rec_int", "total_rec_late_fee", "recoveries",
@@ -196,12 +195,10 @@ GB_PARAMS = dict(max_iter=200, learning_rate=0.1, max_leaf_nodes=31,
 # ----------------------------------------------------------------- evaluation
 CALIBRATION_BINS = 10                # equal-count bins for the reliability curve and ECE
 
-# What an error costs. A missed default loses the principal never returned, net
-# of recoveries and the cost of collecting them; a false alarm loses the interest
-# the loan would have earned. Neither number is assumed: both are computed in
-# data.py from the realized cash flows of this cohort, using the same
-# post-origination columns POST_ORIGINATION forbids the model to see. Pricing an
-# error from history is legitimate; predicting from it is not.
+# A missed default loses principal net of recoveries and collection cost; a
+# false alarm loses forgone interest. Both are computed in data.py from this
+# cohort's realized cash flows, using the columns POST_ORIGINATION hides from
+# the model. Pricing an error from history is legitimate; predicting is not.
 COST_CLIP = (0.0, 1.0)               # loss given default is bounded to a share of principal
 
 # Human-readable labels for tables and figures.

@@ -12,18 +12,16 @@ figure, CSV table, and a single results.json.
     QUICK=1 python3 run_analysis.py          # reduced budgets; exercises every path
 """
 import json
+import pickle
 import os
 import time
 import warnings
 
-# Pin the linear-algebra backend to one thread before NumPy loads, which is the
-# only point at which it can be set. Two reasons, and the second was a surprise.
-# Determinism: a threaded reduction leaves its summation order to the scheduler,
-# which moves the last bits of every probability. Speed: almost every fit in this
-# study is small, and on a 299 x 48 matrix the thread handshake costs far more
-# than the arithmetic. A hundred such fits take 8.25 seconds across eight threads
-# and 0.14 seconds on one. The large fits do not lose by it, and the resamplers
-# get their parallelism from joblib instead, where it is order-independent.
+# Must precede the NumPy import; that is the only point where it takes effect.
+# Threaded reductions leave summation order to the scheduler, which moves the
+# last bits of every probability. Also faster here, since the fits are small:
+# 100 fits on a 299 x 48 matrix take 8.25s on eight threads and 0.14s on one.
+# Resamplers get their parallelism from joblib instead (see resample.py).
 for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
            "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ.setdefault(_v, "1")
@@ -193,6 +191,24 @@ def main():
                                            y_grid, p_grid_oof, t0)
 
     # ================================================================== figures
+    # Every argument the figure functions actually read is cached here, so a
+    # change to a title or a colour can be re-rendered by render_figures.py in
+    # seconds instead of by repeating this 40-minute run. The cache is derived
+    # data and is not tracked; delete it and the next full run rebuilds it.
+    _stage("caching figure inputs", t0)
+    with open(C.OUT_DIR / "plot_inputs.pkl", "wb") as fh:
+        pickle.dump({
+            "funnel": funnel, "vintages": vintages, "cohort_target": cohort[C.TARGET],
+            "leak_audit": leak_audit, "leakage": results["leakage"],
+            "imputation": results["imputation"], "selection": results["selection"],
+            "cv_records": cv_records, "sweep": sweep,
+            "cross_validation": results["cross_validation"],
+            "resample_shapes": resample_shapes, "grid_table": grid_table, "neigh": neigh,
+            "holdout_resample": holdout_resample, "resampling": results["resampling"],
+            "bootstrap": results["bootstrap"], "errors": results["errors"],
+            "costs": results["costs"], "y_te": np.asarray(y_te), "p_head": np.asarray(p_head),
+        }, fh, protocol=4)
+
     _stage("drawing figures", t0)
     PL.fig_cohort(raw, cohort, funnel, vintages, C.FIG_DIR / "fig01_cohort.png")
     PL.fig_leakage(leak_audit, results["leakage"], C.FIG_DIR / "fig02_leakage.png")

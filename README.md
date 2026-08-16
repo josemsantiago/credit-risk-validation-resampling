@@ -33,9 +33,16 @@ principal.
 
 ```bash
 pip install -r requirements.txt      # scikit-learn imbalanced-learn numpy pandas scipy matplotlib
-cd src && python3 run_analysis.py    # ~57 min; regenerates every figure, table, results.json
+cd src && python3 run_analysis.py    # ~41 min; regenerates every figure, table, results.json
 QUICK=1 python3 run_analysis.py      # ~2 min smoke run that exercises every code path
+python3 render_figures.py            # seconds; redraws the figures from cached inputs
+python3 render_figures.py --verify    #   and checks they match what the pipeline drew
 ```
+
+Editing a title, a colour, or a panel layout does not need the full run. The
+pipeline caches the arguments the figure code reads into `outputs/plot_inputs.pkl`,
+and `render_figures.py` replays them in a couple of seconds; `--verify` MD5s every
+figure before and after so a shortcut that stops matching the pipeline says so.
 
 The loan file is a 441 MB public download and is **not** tracked. Fetch it from
 the Kaggle dataset named in `data/SOURCE.txt` into `data/loan.csv`; the loader
@@ -57,6 +64,7 @@ or substituted file fails loudly rather than trains silently.
 │   ├── bootstrap.py         # percentile and BCa intervals, out-of-bag error, .632 and .632+, stability
 │   ├── errors.py            # error slices, risk deciles, threshold rules, cost and approval curves
 │   ├── plots.py             # nine publication-quality figures
+│   ├── render_figures.py    # redraw the figures from cached inputs, without the full run
 │   └── run_analysis.py      # orchestrator -> figures + tables + results.json
 ├── data/                    # SOURCE.txt only (provenance, checksums, filter arithmetic)
 ├── figures/                 # 9 PNGs (fig01..fig09)

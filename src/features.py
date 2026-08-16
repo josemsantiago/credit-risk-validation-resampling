@@ -25,10 +25,9 @@ EMP_LENGTH = {
     "8 years": 8.0, "9 years": 9.0, "10+ years": 10.0,
 }
 
-# A blank mths_since_last_delinq means no delinquency was ever recorded, which
-# is a fact about the borrower rather than a gap in the file. Filling it with a
-# median would place these borrowers among those who did default recently, so it
-# is filled at a ceiling beyond the observed range and flagged by an indicator.
+# A blank mths_since_last_delinq means no delinquency was ever recorded, not a
+# gap in the file. A median fill would place these borrowers among those who
+# defaulted recently, so fill beyond the observed range and flag it.
 NEVER_CEILING = 200.0
 
 
@@ -106,12 +105,9 @@ class Encoder:
         self.target_encode = target_encode
         self.oof_target_encoding = oof_target_encoding
         self.interactions = interactions
-        # How the two informative gaps are handled. "indicator" keeps the ceiling
-        # fill and the flag that says the value was never recorded; "median"
-        # throws the flag away and lets the imputer fill from the observed
-        # distribution, which places a borrower who was never delinquent among
-        # those who were delinquent a median time ago; "drop" removes both
-        # columns and the flag. The three are compared in the report.
+        # "indicator" = ceiling fill plus the never-recorded flag; "median" =
+        # imputer fill, which places a never-delinquent borrower among those
+        # delinquent a median time ago; "drop" = remove both columns.
         self.missing_treatment = missing_treatment
 
     # ------------------------------------------------------------------ fit
