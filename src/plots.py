@@ -268,7 +268,7 @@ def fig_crossval(records, sweep, cv_results, path):
     ax.set_xlabel("Loans available to the ten folds")
     ax.set_ylabel("SD of the fold default rate (percentage points)")
     ax.legend(frameon=False, fontsize=8.5)
-    _panel(ax, "B", "Stratification earns its keep only when small")
+    _panel(ax, "B", "Stratification matters only at small n")
 
     ax = axes[2]                                        # temporal drift
     d = pd.DataFrame(cv_results["temporal_drift"])
@@ -334,7 +334,7 @@ def fig_resampling(shapes, grid, neigh, path):
     ax.set_xlabel("Score (dotted lines: the untouched fold)")
     ax.set_xlim(0, 1)
     ax.legend(frameon=False, fontsize=8, loc="upper center", ncol=2)
-    _panel(ax, "B", "One of these moves; the other does not")
+    _panel(ax, "B", "ROC-AUC holds, F1 at 0.5 does not")
 
     ax = axes[2]                                        # what a synthetic row is
     if len(neigh):
@@ -354,7 +354,7 @@ def fig_resampling(shapes, grid, neigh, path):
                       "typical distance between real defaults")
         ax.set_xlim(0, max(1.35, float(d["ratio"].max()) * 1.45))
         ax.legend(frameon=False, fontsize=7.5, loc="lower right")
-    _panel(ax, "C", "How new a synthetic borrower is")
+    _panel(ax, "C", "How far a synthetic borrower sits from a real one")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -392,7 +392,7 @@ def fig_resampling_effect(holdout, resampling, y_te, path):
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.legend(frameon=False, fontsize=7.5, loc="upper left")
-    _panel(ax, "B", "And it destroys the probabilities")
+    _panel(ax, "B", "What each method does to the probabilities")
 
     ax = axes[2]                                        # the control
     d = pd.DataFrame(resampling["threshold_control"])
@@ -407,7 +407,7 @@ def fig_resampling_effect(holdout, resampling, y_te, path):
     ax.set_xlabel("F1 on the out-of-fold predictions")
     ax.set_xlim(0, max(float(d["f1_at_best"].max()), float(d["f1_at_half"].max())) * 1.45)
     ax.legend(frameon=False, fontsize=7.5, loc="lower right", labelspacing=0.3)
-    _panel(ax, "C", "Everything resampling buys, a threshold buys free")
+    _panel(ax, "C", "The threshold recovers what resampling bought")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -521,7 +521,7 @@ def fig_errors(err, y_te, p_te, path):
     ax.set_xlabel("Risk decile (1 = safest)")
     ax.set_ylabel("Default rate (%)")
     ax.legend(frameon=False, fontsize=8.5, loc="upper left")
-    _panel(ax, "C", "Does the score order borrowers")
+    _panel(ax, "C", "Observed risk climbs with predicted risk")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
@@ -578,7 +578,7 @@ def fig_operating_point(err, costs, path):
     ax.set_ylim(0, 1.30)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.legend(frameon=False, fontsize=8, loc="center right")
-    _panel(ax, "B", "Six rules, six different lenders")
+    _panel(ax, "B", "Six rules, six operating points")
 
     ax = axes[2]                                        # portfolio view
     d = pd.DataFrame(err["approval_curve"])
@@ -595,7 +595,7 @@ def fig_operating_point(err, costs, path):
     ax.set_xlabel("Share of applicants approved (%)")
     ax.set_ylabel("Interest earned less losses ($M)")
     ax.legend(frameon=False, fontsize=8, loc="lower center")
-    _panel(ax, "C", "The decision a lender actually makes")
+    _panel(ax, "C", "Interest earned less losses, by approval rate")
 
     fig.tight_layout()
     fig.savefig(path, bbox_inches="tight")
